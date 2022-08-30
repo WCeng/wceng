@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>oneNote</title>
+    <title>Title</title>
 
 
     <script src="https://how2j.cn/study/js/jquery/2.0.0/jquery.min.js"></script>
@@ -187,7 +187,7 @@
     new Vue({
         el: "#bigDiv",
         data: {
-            titles: getTitle(),
+            titles: getSimTitle(),
             eachContent: localStorage.getItem(getTitle()[getTitle().length - 1]),
             title: getTitle()[getTitle().length - 1],
 
@@ -417,6 +417,18 @@
             }
         }
         return titleList;
+    }
+    function getSimTitle(){
+        let titList = getTitle();
+        let li = [];
+        for (let i in titList){
+            if(titList[i].length>17){
+                li.push(titList[i].substring(0, 17)+"...")
+            }else{
+                li.push(titList[i]);
+            }
+        }
+        return li;
     }
 
     //如果titles是空，则创建
