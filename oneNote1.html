@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <script src="https://how2j.cn/study/js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="https://how2j.cn/study/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="https://how2j.cn/study/js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+
+</head>
+<body>
+
+<style>
+    .onenote {
+        /*text-align: center;*/
+        width: 80%;
+        border: 1px solid #999999;
+    }
+
+    .contentDiv {
+        text-align: left;
+        width: 100%;
+        border: 1px solid pink;
+        outline: none;
+        padding: 15px;
+        margin-bottom: 200px;
+        user-modify: read-only;
+    }
+
+    .codeDiv {
+        text-align: left;
+    }
+
+    .codeDiv {
+        /* width: 500px; */
+        /* height: 500px; */
+    }
+
+    .titleDiv {
+        border: 1px solid #999999;
+        height: 100%;
+        width: 20%;
+    }
+
+    .knowledgeTitle {
+        display: block;
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+        width: 40%;
+        margin: 20px auto 30px;
+    }
+
+    .copySpan {
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    .save {
+        width: 100px;
+    }
+
+    .saveParentDiv {
+        text-align: center;
+    }
+
+    .exportButton {
+        position: absolute;
+        top: 10px;
+    }
+
+    .importButton {
+        position: absolute;
+        top: 10px;
+        left: 100px;
+    }
+
+    .adjustDiv {
+        width: 80%;
+        margin: 20px auto;
+        position: relative;
+    }
+
+    .editSpan {
+        cursor: pointer;
+        font-size: 16px;
+        vertical-align: center;
+        margin-left: 30px;
+    }
+
+    pre {
+        position: relative;
+        outline: none;
+    }
+
+    pre:hover {
+        cursor: pointer;
+    }
+
+    .copyButton {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        opacity: 0.6;
+        display: block;
+    }
+
+    .changeTheme {
+        margin-left: 30px;
+    }
+
+    .dark {
+        background-color: rgba(0, 0, 0, 0.99);
+        color: white;
+        opacity: 0.7;
+    }
+
+
+</style>
+
+<div id="bigDiv">
+    <div class="onenote pull-left" id="oneNote">
+        <div class="adjustDiv">
+            <button class="exportButton btn btn-info"><span class="	glyphicon glyphicon-export"></span> 导出</button>
+            <button class="importButton btn btn-info"><span class="	glyphicon glyphicon-import"></span> 导入</button>
+            <input type="text" class="knowledgeTitle form-control" v-model="title" v-on:blur="blurSaveTitle">
+
+            <button class="addCodeButton" v-on:click="addCode">
+                <span class="glyphicon glyphicon-plus" title="添加代码"></span>
+            </button>
+            <span class="editSpan"><span class="glyphicon glyphicon-lock "></span></span>
+            <button class="btn btn-success changeTheme">切换主题</button>
+            <button class="save btn btn-success pull-right">保存</button>
+            <div style="clear: both"></div>
+
+
+            <div class="contentDiv" contenteditable="true" v-html="eachContent" @blur="blurSaveContent($event)"
+                 ref="contentDiv"></div>
+        </div>
+    </div>
+
+
+    <div class="pull-right titleDiv" id="titleDiv">
+        <div class="list-group listTitle">
+            <a href="#" v-on:click="addTitle" class="list-group-item list-group-item-default addTitleLink"><span
+                    class="glyphicon glyphicon-plus"></span></a>
+            <a href="#" v-for="(titleLink,index) in titles" v-on:click="showTitle(titleLink)"
+               class="list-group-item list-group-item-success">
+                {{index + 1 + ".  " + titleLink}}
+                <span class="glyphicon glyphicon-trash pull-right deleteLink" @click="deleteTitle(titleLink)"></span>
+            </a>
+        </div>
+    </div>
+
+
+    <input type="file" class="hidden" id="fileInput" onchange="getFileContent(value)">
+    <ta></ta>
+
+
+</div>
+</body>
+</html>
+
+
+<script>
+
+    Vue.component('ta', {
+        template: '<textarea class="codeTA" v-on:blur="blurSaveCode"></textarea>',
+        methods: {
+            blurSaveCode: function () {
+                $(".codeTA").hide()
+                var value = $(".codeTA").val();
+                if (value.length == 0) {
+                    $(".contentDiv").html($(".contentDiv").html() + "<br>")
+                    return
+                }
+                value = html_encode(value)
+                $(".contentDiv").html($(".contentDiv").html() + "<pre contenteditable='true'>" + value + "</pre><br>")
+                $(".codeTA").val("");
+            }
+        }
+    })
+
+    new Vue({
+        el: "#bigDiv",
+        data: {
+            titles: getTitle(),
+            eachContent: localStorage.getItem(getTitle()[getTitle().length - 1]),
+            title: getTitle()[getTitle().length - 1],
+
+        },
+
+        methods: {
+            showTitle: function (title) {
+                this.title = title;
+                this.eachContent = localStorage.getItem(title);
+                setTimeout(function () {
+                    imgAdapt()
+                    ifEdit()
+                }, 10)
+            },
+            //    添加标题
+            addTitle: function () {
+                this.title = "";
+                this.eachContent = ""
+                $(".knowledgeTitle").focus();
+            },
+            //    删除标题
+            deleteTitle: function (title) {
+                let ifDelete = confirm("确认要删除吗？");
+                if (ifDelete) {
+                    let titleList = getTitle();
+                    titleList = titleList.filter((x) => x !== title);
+                    localStorage.removeItem(title);
+                    saveTitles(titleList);
+                    location.reload();
+                }
+            },
+            //    失去焦点保存标题
+            blurSaveTitle: function () {
+                let titleList = getTitle();
+                for (let i in titleList) {
+                    if (titleList[i] === this.title || this.title.trim().length === 0) {
+                        return;
+                    }
+                }
+                titleList.push(this.title);
+                saveTitles(titleList);
+                location.reload()
+            },
+            //    失去焦点保存内容
+            blurSaveContent: function (event) {
+                if (this.title.trim().length === 0) {
+                    $(".knowledgeTitle").focus()
+                    return;
+                }
+                let content = event.currentTarget.innerHTML;
+                localStorage.setItem(this.title, content);
+
+                setTimeout(function () {
+                    imgAdapt()
+                }, 10)
+            },
+            //    添加代码
+            addCode: function () {
+                $(".codeTA").show()
+                $(".codeTA").focus()
+            }
+        }
+    })
+
+
+    $(".codeTA").hide()
+
+    $(".contentDiv").on("paste", function (e) {
+    })
+
+    let editSpanFound = true;
+    $(".editSpan").click(function () {
+        if(editSpanFound){
+            $(this).attr("style", "color: #000000")
+        }else {
+            $(this).attr("style", "color: #999999")
+        }
+        editSpanFound = !editSpanFound;
+
+        var contentDivCon = $(".contentDiv").attr("contenteditable");
+        if (contentDivCon == "true") {
+            $(".contentDiv").attr("contenteditable", "false")
+            $("pre").attr("contenteditable", "false")
+        } else {
+            $(".contentDiv").attr("contenteditable", "true")
+            $("pre").attr("contenteditable", "true")
+        }
+    })
+    $(".editSpan").click()
+    function ifEdit(){
+        var contentDivCon = $(".contentDiv").attr("contenteditable");
+        if (contentDivCon == "true") {
+            $("pre").attr("contenteditable", "true")
+        } else {
+            $("pre").attr("contenteditable", "false")
+        }
+    }
+
+
+    //图片自适应
+    let divWidth = $(".contentDiv").css("width");
+
+    function imgAdapt() {
+        $(".contentDiv img").each(function (index, element) {
+            let width = $(this).css("width");
+            if (width > divWidth) {
+                $(this).css("width", "100%")
+            }
+        })
+    }
+
+    imgAdapt()
+
+    //切换主题
+    let found = false;
+    $(".changeTheme").click(function () {
+        if (found === false) {
+            $("body").addClass("dark")
+        } else {
+            $("body").removeClass("dark")
+        }
+        found = !found;
+    })
+
+
+    $(".contentDiv").on("mouseenter", "pre", function () {
+        $(this).append("<button class='copyButton' contenteditable='false'>复制</button>")
+    })
+    $(".contentDiv").on("mouseleave", "pre", function () {
+        $(".copyButton").remove()
+    })
+    $(".contentDiv").on("click", ".copyButton", function (){
+        $(this).hide();
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        var range = document.createRange();
+        let con = $(this).parent().get();
+        range.selectNodeContents(con[0]); // 需要选中的dom节点
+        selection.addRange(range);
+
+        try{
+            document.execCommand("copy", undefined, undefined)
+        }catch (e){
+            console.log("浏览器不支持该功能")
+        }
+    })
+
+    //图片识别
+    $(".contentDiv").on("dblclick", "img", function (){
+        let sourcedata = $(this).attr("src");
+        var data = "{\"image\":\"\",\"url\":\"https://www.apispace.com/assets/images/free_try.jpg\",\"language\":\"CHN_ENG\"}"
+
+        $.ajax({
+            "url":"https://eolink.o.apispace.com/ocrbase/ocr/v1/base",
+            "method": "POST",
+            "headers": {
+                "X-APISpace-Token":"qcrd8o8j7wmy0tu2jbffwf2bh7x4iaja",
+                "Authorization-Type":"apikey",
+                "Content-Type":"application/json"
+            },
+            "data": data,
+            "crossDomain": true
+        })
+            .done(function(response){
+                alert(1)
+            })
+            .fail(function(jqXHR){
+                alert(0)
+            })
+    })
+
+
+
+
+
+
+
+
+
+
+
+    // 编译和反编译
+    function html_encode(str) {
+        var s = "";
+        if (str.length == 0) return "";
+        s = str.replace(/&/g, "&amp;");
+        s = s.replace(/</g, "&lt;");
+        s = s.replace(/>/g, "&gt;");
+        s = s.replace(/ /g, "&nbsp;");
+        s = s.replace(/\'/g, "&#39;");
+        s = s.replace(/\"/g, "&quot;");
+        s = s.replace(/\n/g, "<br/>");
+        return s;
+    }
+
+    //    标题失去焦点保存
+    $(".knowledgeTitle").blur(function () {
+        var title = $(this).val();
+
+        let found = true;
+
+        var titleList = getTitle();
+        for (var i in titleList) {
+            if (titleList[i] == title || 0 == title.length) {
+                found = false;
+                break;
+            }
+        }
+        if (found) {
+            titleList.push(title)
+            saveTitles(titleList)
+        }
+    })
+
+
+    //  得到标题
+    function getTitle() {
+        var titleList = new Array();
+        var titles = localStorage.getItem("titles")
+        if (titles == null) {
+            return titleList;
+        }
+        var titleArray = titles.split("|||");
+        for (var i in titleArray) {
+            if (titleArray[i].trim().length != 0) {
+                titleList.push(titleArray[i]);
+            }
+        }
+        return titleList;
+    }
+
+    //如果titles是空，则创建
+    if (localStorage.getItem("titles") == null) {
+        localStorage.setItem("titles", "");
+    }
+
+    //保存标题
+    function saveTitles(titleList) {
+        var titleStr = ""
+        for (var i in titleList) {
+            titleStr += titleList[i] + "|||"
+        }
+        localStorage.setItem("titles", titleStr);
+    }
+
+    //    备份文件(导出)
+    $("button.exportButton").on("click", function () {
+
+        var textTitles = localStorage.getItem("titles");
+        var titleList = getTitle();
+        var content = "";
+        for (var i in titleList) {
+            var textEachContent = localStorage.getItem(titleList[i]);
+            content += textEachContent + "||||"
+        }
+        var textContent = textTitles + "&&&" + "\r\n" + content;
+        exportRaw('oneNoteData.txt', textContent)
+    })
+
+    function fakeClick(obj) {
+        var ev = document.createEvent("MouseEvents");
+        ev.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        obj.dispatchEvent(ev);
+    }
+
+    function exportRaw(name, data) {
+        var urlObject = window.URL || window.webkitURL || window;
+        var export_blob = new Blob([data]);
+        var save_link = document.createElementNS("http://www.w3.org/1999/xhtml", "a")
+        save_link.href = urlObject.createObjectURL(export_blob);
+        save_link.download = name;
+        fakeClick(save_link);
+    }
+
+    //    导入文件
+    $(".importButton").click(function () {
+        $("#fileInput").click()
+    })
+
+    function getFileContent(value) {
+        var doc = document.getElementById('fileInput')
+        var fileName = doc.files[0].name;
+        var selectedFile = doc.files[0];
+
+        var reader = new FileReader();//这里是核心！！！读取操作就是由它完成的。
+        reader.readAsText(selectedFile);//读取文件的内容
+
+        reader.onload = function () {
+            var content = this.result;
+            var titles = content.split("&&&")[0];
+            var contents = content.split("&&&")[1];
+            var contentList = contents.split("||||");
+            var index;
+            for (var i in contentList) {
+                if (contentList[i].trim().length === 0) {
+                    index = i;
+                    break;
+                }
+            }
+            if (null != index) {
+                contentList.splice(index, 1);
+            }
+            localStorage.setItem("titles", titles);
+            var titleList = titles.split("|||")
+            titleList.splice(titleList.length - 1, 1);
+            for (var y in titleList) {
+                localStorage.setItem(titleList[y], contentList[y])
+                location.reload()
+            }
+        }
+    }
+</script>
+
