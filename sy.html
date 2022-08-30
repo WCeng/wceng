@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <title>Document</title>
+    <meta name="viewport" content="user-scalable:no, ">
+</head>
+<script src="https://how2j.cn/study/js/jquery/2.0.0/jquery.min.js"></script>
+<link href="https://how2j.cn/study/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+<script src="https://how2j.cn/study/js/bootstrap/3.3.6/bootstrap.min.js"></script>
+<script type="text/javascript"
+    src="https://webapi.amap.com/maps?v=1.4.15&key=c68976ff6e959599b246aee4e7e4f934"></script>
+<script type="text/javascript" src="http://hovertree.com/texiao/html5/43/js/jquery.fireworks.js"></script>
+
+
+<style>
+    div.con {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        background-color: transparent;
+        width: 130px;
+        line-height: 50px;
+        color: red;
+        font-size: 19px;
+        text-align: center;
+        transform-style: preserve-3d;
+    }
+
+    div.con div {
+        width: 130px;
+        height: 50px;
+        line-height: 50px;
+        border-radius: 10px;
+        position: absolute;
+        top: 0%;
+        text-align: center;
+        opacity: 0.96;
+        /* border: 1px solid gray; */
+    }
+
+    .one {
+        cursor: pointer;
+        font-size: 20px;
+        color: green;
+        background-color: aquamarine;
+        /* background-color: transparent; */
+        transform: rotateY(0deg) translateZ(65px);
+    }
+
+    .two {
+        color: lightgray;
+        cursor: pointer;
+        background-color: blueviolet;
+        transform: rotateY(90deg) translateZ(65px);
+    }
+
+    .third {
+        color: lightgray;
+        background-color: brown;
+        transform: rotateY(180deg) translateZ(65px);
+    }
+
+    .four {
+        color: aliceblue;
+        cursor: pointer;
+        font-size: 15px;
+        background-color: rgb(173, 120, 59);
+        color: lightgray;
+        transform: rotateY(270deg) translateZ(65px);
+    }
+
+    .five {
+        width: 100px;
+        height: 130px !important;
+        background-color: rgb(241, 222, 174);
+        /* background-color: transparent; */
+        transform: rotateY(90deg) rotateX(90deg) translateZ(65px);
+    }
+
+    .donghua {
+        animation: move 4s linear infinite;
+    }
+
+    /* .donghua1{
+        animation: move1 2s linear;
+    }
+    @keyframes move1{
+        form{transform: rotateX(0deg)}
+        to{transform: rotateX(-20deg);}
+    } */
+
+    @keyframes move {
+        0% {
+            transform: rotateX(-20deg) rotateY(360deg);
+        }
+
+        100% {
+            transform: rotateX(-20deg) rotateY(0);
+        }
+    }
+</style>
+
+<style>
+    div.homeDiv {
+        /* background-color: red; */
+        height: 940px;
+        width: 1500px;
+        /* font-size: 30px; */
+        color: lightcoral;
+        /* text-align: center; */
+        /* background-image: url(img/15b4b9ced884fe63b799696ce09efc26.jpg); */
+        /* padding-top: 50px; */
+        position: relative;
+        /* border: 1px solid red; */
+        /* display: none; */
+    }
+
+    img.backImg {
+        width: 1500px;
+        position: absolute;
+        top: 0px;
+    }
+
+    div.loginDiv {
+        font-size: 30px;
+        /* background-color: beige; */
+        width: 400px;
+        height: 500px;
+        margin: 0px auto;
+        opacity: 0.7;
+        text-align: center;
+        padding-top: 120px;
+        /* margin-top: 200px; */
+    }
+
+    div.loginDiv span.name,
+    span.password {
+        display: block;
+        font-weight: bold;
+        font-family: 隶书;
+        /* margin: 40px; */
+        border: 1px solid pink;
+        border-radius: 10px;
+        width: 200px;
+        margin: 30px auto;
+        line-height: 60px;
+        animation: colorChange 20s infinite;
+        box-shadow: 3px 3px 4px #000;
+    }
+
+    @keyframes colorChange {
+        0% {
+            border: 1px solid rgb(255, 0, 0);
+        }
+
+        10% {
+            border: 1px solid rgb(255, 102, 0);
+        }
+
+        20% {
+            border: 1px solid rgb(255, 174, 0);
+        }
+
+        30% {
+            border: 1px solid rgb(128, 255, 0);
+        }
+
+        40% {
+            border: 1px solid rgb(0, 255, 174);
+        }
+
+        50% {
+            border: 1px solid rgb(0, 204, 255);
+        }
+
+        60% {
+            border: 1px solid rgb(0, 55, 255);
+        }
+
+        70% {
+            border: 1px solid rgb(157, 0, 255);
+        }
+
+        80% {
+            border: 1px solid rgb(255, 0, 242);
+        }
+
+        90% {
+            border: 1px solid rgb(255, 0, 72);
+        }
+
+        100% {
+            border: 1px solid rgb(255, 0, 0);
+        }
+    }
+
+    span.submit {
+        border: 1px solid whitesmoke;
+        display: block;
+        border-radius: 30px;
+        color: white;
+        font-family: 隶书;
+        margin-top: 80px;
+        box-shadow: 3px 3px 4px #000;
+    }
+
+    div.loginDiv span.name,
+    span.password:hover {
+        cursor: pointer;
+    }
+
+    span.submit:hover {
+        cursor: pointer;
+        border: 1px solid lightgreen;
+        opacity: 0.8;
+    }
+
+    .loginDiv input {
+        width: 197px;
+        height: 60px;
+        outline: none;
+        border-width: 0px;
+        background-color: transparent;
+        text-align: center;
+    }
+
+    img.yaotouImg {
+        opacity: 1;
+    }
+
+    /* div.fireDiv {
+        width: 500px;
+        height: 300px;
+    } */
+
+    .musicDiv {
+        /* border:  1px solid red; */
+        position: absolute;
+        left: 200px;
+        top: 30px;
+        /* float: right; */
+        display: none;
+    }
+
+    img.musicImg {
+        position: absolute;
+        right: 30px;
+        top: 30px;
+        width: 30px;
+        opacity: 0.5;
+        cursor: pointer;
+        display: none;
+    }
+
+    div.goodMorningDiv {
+        width: 250px;
+        height: 200px;
+        /* background-color: lightblue; */
+        position: absolute;
+        top: 170px;
+        left: 30px;
+    }
+
+    div.zaoanAndwanan {
+        font-size: 30px;
+        font-family: 宋体;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+    }
+
+    div.yulu {
+        font-family: 楷体;
+        font-size: 16px;
+        margin-top: 20px;
+        color: lightgray;
+    }
+
+    div.shiciDiv {
+        width: 320px;
+        height: 300px;
+        /* background-image: url(https://img.tukuppt.com/ad_preview/00/08/37/5d1f012a1abc4.jpg!/fw/780); */
+        background-repeat: no-repeat;
+        /* background-color: bisque; */
+        position: relative;
+        top: -120px;
+        left: 30px;
+    }
+
+    div.shiciDiv span {
+        display: block;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        font-size: 20px;
+        font-family: 宋体;
+    }
+
+    div.shiciDiv div {
+        margin-top: 20px;
+        font-family: 楷体;
+        font-size: 16px;
+        color: lightgray;
+        animation-play-state: running;
+    }
+
+    /* 天气style------------------------------------- */
+    .weatherDiv {
+        position: absolute;
+        /* width: 280px; */
+        /* height: 320px; */
+        /* background-color: gray; */
+        right: 30px;
+        top: 20px;
+        color: white;
+    }
+
+    .tempCon {
+        float: left;
+        width: 100px;
+        line-height: 80px;
+        /* background-color: blue; */
+        font-size: 35px;
+        text-align: center;
+    }
+
+    .fuhao {
+        color: rgb(207, 207, 207);
+        font-size: 14px;
+        vertical-align: top;
+    }
+
+    .address {
+        /* background-color: #000; */
+        float: left;
+    }
+
+    .wind {
+        margin: 0px 10px;
+        /* margin-right: 10px; */
+    }
+
+    .weatherTable {
+        /* width: 250px; */
+        height: 60px;
+        margin: 10px 0px;
+    }
+</style>
+<script>
+
+    var localStorage = window.localStorage;
+
+    $(function () {
+        //检测是否联网，支持离线检测的浏览器有IE6+(只支持navigator.onLine属性)、Firefox3、Safari4、Opera 10.6、Chrome、iOS 3.2版Safari和Android版WebKit。
+        if (!navigator.onLine) {
+            $("div.homeDiv").hide();
+            return;
+        }
+        $("div.loginDiv input").hide();
+        $(".yaotouImg").hide();
+
+        // 暂停动画
+        var pausedIndex = true;
+        $("div.one").click(function () {
+            // $("div.con").addClass("donghua1");
+            $("div.con").addClass("donghua");
+            if (pausedIndex == false) {
+                $("div.con").css("animation-play-state", "paused");
+                pausedIndex = true;
+            } else {
+                $("div.con").css("animation-play-state", "running");
+                pausedIndex = false;
+            }
+        })
+        $("div.five").click(function () {
+            if (pausedIndex == false) {
+                $("div.con").css("animation-play-state", "paused");
+                pausedIndex = true;
+            } else {
+                $("div.con").css("animation-play-state", "running");
+                pausedIndex = false;
+            }
+        })
+
+        // 输入框
+        $("span.name").click(function () {
+            $("span.name1").fadeOut(500, function () {
+                $("input.nameSetting").show();
+                $("input.nameSetting").focus();
+
+            });
+        })
+
+        $("span.password").click(function () {
+            $("span.password1").fadeOut(500, function () {
+                $("input.passwordSetting").show();
+                $("input.passwordSetting").focus();
+
+            });
+        })
+
+        // 自动填充姓名密码
+        localStorage.setItem("loginKey", "");
+        var key = localStorage.getItem("loginKey");
+        if (key != null) {
+            $(".nameSetting").val("孙莹");
+            $(".passwordSetting").val("1314");
+        }
+        $("span.submit").click(function () {
+            // 第一次登录后以后自动登录
+            var name = $(".nameSetting").val();
+            var password = $(".passwordSetting").val();
+            if ("孙莹" == name && password == "1314") {
+                var loginKey = "";
+                localStorage.setItem("loginKey", loginKey);
+                $("div.homeDiv").fadeOut(1000, function () {
+                    $("div.enteredDiv").fadeIn(1000);
+
+                });
+                // $('.fireDiv').fireworks({
+                //     sound: true, // sound effect
+                //     opacity: 1,
+                //     width: '100%',
+                //     height: '100%'
+                // });
+
+                // setTimeout(3000);
+                // $(".fireDiv").hide();
+            } else {
+                $("span.submit").css("border", "1px solid red");
+                $(".yaotouImg").fadeIn(1000);
+                $(".yaotouImg").fadeOut(2000);
+            }
+        })
+
+        var day = new Date().getDay(); //通过日期对象获取数字形式的星期几
+        var weeks = new Array("星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+
+        // 日期
+        $("div.one").html(weeks[day]);
+
+        // 通过时间换背景图
+        // var hour = new Date().getHours();
+        // if(8< hour<12){
+
+        // }
+
+        // 早安语录
+        var oneMorningLoveSay = outOneLoveSaying("morningSay");
+        var morninghour = new Date().getHours();
+        if (morninghour < 8 && morninghour >= 5) {
+            $("div.zaoanAndwanan").html("早安!");
+            $("div.yulu").html(oneMorningLoveSay);
+        }
+
+        // 晚安语录
+        var oneNightLoveSay = outOneLoveSaying("nightSay");
+        var nighthour = new Date().getHours();
+        if (nighthour >= 21 && nighthour <= 23) {
+            $("div.zaoanAndwanan").html("晚安!");
+            $("div.yulu").html(oneNightLoveSay);
+        }
+
+        // 诗词
+        var shicis = $("div.eachShici");
+        var shiciNumber = shicis.length;
+        var randomSid = parseInt(Math.random() * shiciNumber);
+        var shiciTitle = $("div.eachShici[sid=" + randomSid + "] span").html();
+        var shiciContent = $("div.eachShici[sid=" + randomSid + "] div").html();
+        // alert(shiciContent);
+        $("div.shiciDiv span").html(shiciTitle);
+        $("div.shiciDiv div").html(shiciContent);
+        $("div.shiciDiv").hide();
+        $("div.two").click(function () {
+            $("div.shiciDiv").show();
+        })
+
+        // 随机音乐
+        $("div.four").click(function () {
+            var musicNameAndURL = outMusic("musicSource");
+            $("div.four").html(musicNameAndURL[0]);
+            $(".randomMusicPlayer").attr("src", musicNameAndURL[1]);
+            $(".musicDiv").show();
+            // $("audio").
+        })
+        
+        // 我爱你z
+        $(".third").click(function(){
+            var readContent = shiciTitle + shiciContent
+            var urlRead = "http://tts.youdao.com/fanyivoice?le=zh&word=" + readContent;
+            $(".musicDiv").show();
+            $(".randomMusicPlayer").attr("src", urlRead)
+        })
+
+
+
+    })
+
+    function outMusic(musicURL) {
+        var urls = $("div." + musicURL).html();
+        var urlAndName = urls.split(" ");
+        var musicMsgArray = new Array();
+        for (var i in urlAndName) {
+            if (urlAndName[i].trim().length != 0) {
+                musicMsgArray.push(urlAndName[i]);
+            }
+        }
+        var url;
+        var urlIndex;
+        while (true) {
+            urlIndex = parseInt(Math.random() * musicMsgArray.length);
+            url = musicMsgArray[urlIndex];
+            if (url.length > 20) {
+                break;
+            }
+        }
+        var musicNameAndUrlArray = new Array();
+        musicNameAndUrlArray.push(musicMsgArray[urlIndex - 1]);
+        musicNameAndUrlArray.push(url);
+        return musicNameAndUrlArray;
+    }
+
+    function outOneLoveSaying(LoveSayingCon) {
+        var loveSay = $("div." + LoveSayingCon).html();
+        var eachLoveSay = loveSay.split(" ");
+        var sayLoveArray = new Array();
+        for (var i in eachLoveSay) {
+            if (eachLoveSay[i].trim().length != 0) {
+                sayLoveArray.push(eachLoveSay[i]);
+            }
+        }
+        // alert(sayLoveArray.length);
+        var index = Math.random() * sayLoveArray.length;
+        index = parseInt(index);
+        var oneLoveSay = sayLoveArray[index];
+        return oneLoveSay;
+    }
+
+    // 获取当前天气和预报天气
+    $(function () {
+        // 定位
+        //初始化地图时，若center属性缺省，地图默认定位到用户所在城市的中心
+        var map = new AMap.Map('container', {
+            // resizeEnable: true;
+        });
+        var cityAdcode = map.getAdcode();
+
+        
+        // 当前天气
+        var key = "c68976ff6e959599b246aee4e7e4f934";
+        var url = "https://restapi.amap.com/v3/weather/weatherInfo?city=" + cityAdcode + "&key=" + key + "&output=JSON/XML";
+        $.get(
+            url,
+            function (date) {
+                // var temp = result.forecasts[0].casts[0].date;
+                var temp = date.lives[0].temperature;
+                var address = date.lives[0].city;
+                var weather = date.lives[0].weather;
+                var wind = date.lives[0].winddirection + "风  " + date.lives[0].windpower;
+                var reporttime = date.lives[0].reporttime;
+                $(".temp").html(temp);
+                $(".address").html(address);
+                $(".weatherStatus").html(weather);
+                $(".wind").html(wind);
+                $(".fuhao").html("℃");
+            }
+        )
+
+
+        // 预报天气
+        function caseDate(date) {
+            var arr = date.split("");
+            var year = parseInt(arr[5] + arr[6])
+            var day = parseInt(arr[8] + arr[9])
+            return "（" + year + "月" + day + "日" + "）";
+        }
+        function caseWeek(week) {
+            if (week == 1) {
+                return "周一"
+            }
+            if (week == 2) {
+                return "周二"
+            }
+            if (week == 3) {
+                return "周三"
+            }
+            if (week == 4) {
+                return "周四"
+            }
+            if (week == 5) {
+                return "周五"
+            }
+            if (week == 6) {
+                return "周六"
+            }
+            if (week == 7) {
+                return "周日"
+            }
+        }
+
+        var url = "https://restapi.amap.com/v3/weather/weatherInfo?city=" + cityAdcode + "&key=" + key + "&output=JSON&extensions=all";
+        $.get(
+            url,
+            function (data) {
+                console.log(JSON.stringify(data));
+                var index = data.forecasts[0].casts.length;
+
+                for (var i = 0; i < index; i++) {
+                    var json = data.forecasts[0].casts[i];
+                    var week = json.week;
+                    var date = json.date;
+                    var dayweather = json.dayweather;
+                    var nightweather = json.nightweather;
+                    var daytemp = json.daytemp;
+                    var nighttemp = json.nighttemp;
+                    var daywind = json.daywind;
+                    var nightwind = json.nightwind;
+                    var daypower = json.daypower;
+                    var nightpower = json.nightpower;
+                    var temp;
+                    var reporttime = data.forecasts[0].reporttime;
+                    date = caseDate(date);
+                    week = caseWeek(week);
+                    if (i == 0) {
+                        week = "今天";
+                    }
+                    if (i == 1) {
+                        week = "明天";
+                    }
+                    temp = nighttemp + "℃~" + daytemp + "℃";
+                    daywind = daywind + "风" + daypower + "级";
+                    nightwind = nightwind + "风" + nightpower + "级";
+
+                    if (i != 0) {
+                        $(".weatherTable[son=0]").clone().attr("son", i).appendTo($(".weatherDiv"));
+                    }
+
+                    $(".weatherTable[son=" + i + "] .preWeek").html(week);
+                    $(".weatherTable[son=" + i + "] .preDate").html(date);
+                    $(".weatherTable[son=" + i + "] .preDayWeather").html(dayweather);
+                    $(".weatherTable[son=" + i + "] .preNightWeather").html(nightweather);
+                    $(".weatherTable[son=" + i + "] .preTemp").html(temp);
+                    $(".weatherTable[son=" + i + "] .preDayWind").html(daywind)
+                    $(".weatherTable[son=" + i + "] .preNightWind").html(nightwind)
+
+                    if (i == index - 1) {
+                        $("<div class='updateTimeWeather ' style='text-align: right; font-size: 12px; color: #999'>更新时间: " + reporttime + "</div>").appendTo(".weatherDiv")
+                    }
+                }
+            }
+        )
+
+        // 展示预报天气
+        $(".weatherTable").hide();
+        $(".detailWeather").click(function(){
+            $(".weatherTable").toggle();
+            // $(".updateTimeWeather").toggle();
+        })
+
+    })
+</script>
+
+<body>
+    <div class="homeDiv">
+
+        <img class="backImg" src="https://up.tt98.com/uploadfile/pcbz/2020-11-09/15b4b9ced884fe63b799696ce09efc26.jpg">
+
+        <div class="loginDiv">
+
+            <span class="name"><span class="name1">姓名</span><input type="text" class=" nameSetting" value=""></span>
+            <span class="password"><span class="password1">密码</span><input type="password" class=" passwordSetting"
+                    value=""></span>
+            <span class="submit">进入</span>
+            <img class="yaotouImg" width="40px"
+                src="https://ts1.cn.mm.bing.net/th/id/R-C.c631a1207b493722725b07c651d2c0d5?rik=274G5PHiGRtzFg&riu=http%3a%2f%2fpic.962.net%2fup%2f2018-10%2f15391532871462217.gif&ehk=IMecx9f1Jj9qNXR%2fYUiF1F6Dsrhj15eZlw5cioOZwRc%3d&risl=&pid=ImgRaw&r=0">
+        </div>
+
+        <img class="musicImg" src="https://img95.699pic.com/element/40112/5266.png_860.png">
+        <!-- <iframe class="music" frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86
+            src=""></iframe> -->
+
+        <div class="con" id="con">
+            我爱你
+            <div class="one"></div>
+            <div class="two">诗</div>
+            <div class="third">吟</div>
+            <div class="four">歌</div>
+            <div class="five">
+                <!-- <button class="clearButton">清除</button> -->
+            </div>
+
+        </div>
+
+        <div class="musicDiv" style="float:left">
+            <audio controls autoplay class="randomMusicPlayer">
+                <source src="">
+            </audio>
+        </div>
+
+        <div class="goodMorningDiv">
+            <div class="zaoanAndwanan"></div>
+            <div class="yulu"></div>
+        </div>
+
+        <div class="shiciDiv">
+            <span></span>
+            <div></div>
+        </div>
+
+        <div class="weatherDiv" style="">
+            <div class="detailWeather" style=" width: 350px; cursor: pointer;" >
+                <div class="tempCon"><span class="temp"></span><span class="fuhao"></span></div>
+                <div style="padding: 20px">
+                    <span class="address"></span><br>
+                    <span class="weatherStatus"></span>
+                    <span class="wind"></span>
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+            <!-- ---------------------------------------------------------------------- -->
+            <table border="0" son="0" class="weatherTable" style="width: 350px; border-bottom: 1px solid #999;">
+                <tr>
+                    <td rowspan="2" style="text-align: center ; width:75px">
+                        <div class="preWeek" style="font-size: 20px; font-weight: bold;"></div>
+                        <div class="preDate" style="font-size: 12px; color: #999"></div>
+                    </td>
+                    <td style="width: 40px; font-size: 12px;">白天: </td>
+                    <td class="preDayWeather" style="padding-right: 10px ;font-weight: bold;font-size: 16px"></td>
+                    <td rowspan="2" class="preTemp"></td>
+                    <td class="preDayWind" style="width: 100px;"></td>
+                </tr>
+                <tr>
+                    <td style="font-size: 12px;">晚上: </td>
+                    <td class="preNightWeather" style="font-size: 16px; font-weight: bold"></td>
+                    <td class="preNightWind"></td>
+                </tr>
+            </table>
+
+
+        </div>
+
+    </div>
+
+    <!-- ------------------------------------第二页的style -->
+    <style>
+        div.enteredDiv {
+            width: 1500px;
+            height: 940px;
+            /* background-color: rgb(119, 203, 63); */
+            display: none;
+            vertical-align: top;
+            overflow: hidden;
+            background-image: url(https://ts1.cn.mm.bing.net/th/id/R-C.395ac6d9ed4489278e42304f5df6230a?rik=rMbehv2IY40WmA&riu=http%3a%2f%2fwww.pp3.cn%2fuploads%2f20120713j%2f527.jpg&ehk=aU5j8Zk3G%2brJTaflwuLN8ynFPbGTj1DkoYbX8WrsPTg%3d&risl=&pid=ImgRaw&r=0);
+            background-color: #000;
+            /* opacity: 0.7; */
+            text-align: center;
+            /* font-size: 0px; */
+            position: relative;
+        }
+
+        div.eachSmallDiv {
+            background-color: rgb(246, 234, 210);
+            width: 300px;
+            height: 550px;
+            margin: 80px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            opacity: 0.9;
+            position: relative;
+            box-shadow: 5px 5px 4px;
+            vertical-align: top;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .writeButton {
+            margin: 200px auto 50px;
+            width: 200px;
+            height: 50px;
+            border-radius: 20px;
+            border: 1px solid rgb(153, 255, 0);
+            color: #999999;
+            font-size: 20px;
+            box-shadow: 1px 1px;
+        }
+        .writeButton:hover{
+            opacity: 0.8;
+        }
+
+        .rijiName {
+            color: rgb(173, 120, 59);
+            font-size: 60px;
+            display: block;
+            margin: 60px auto 0px;
+        }
+
+        div.rijiDiv {
+            font-size: 0px;
+            /* transition: 1s; */
+            transform-origin: left;
+            transform: translate3d();
+            perspective: 800px;
+        }
+
+        div.rijiBookDiv {
+            display: inline-block;
+            width: 370px;
+            height: 550px;
+            background-color: bisque;
+            margin: 80px;
+            box-shadow: 3px 3px 3px;
+            perspective: 800px;
+            border-radius: 20px;
+        }
+
+        .rijiBookName {
+            color: rgb(173, 120, 59);
+            font-size: 40px;
+            text-align: center;
+        }
+
+        .day {
+            margin-right: 20px;
+        }
+
+        .year {
+            margin-left: 20px;
+        }
+
+        .rijiBookTA {
+            width: 320px;
+            height: 380px;
+            margin: 10px;
+            border: 1px solid lightgray;
+            resize: none;
+            text-indent: 2em;
+            padding: 10px;
+            font-size: 16px;
+            font-family: 楷体;
+            background-color: blanchedalmond;
+            outline-color: lightpink;
+        }
+
+        .rijiBookButtonDiv button {
+            margin: 15px 50px;
+            width: 70px;
+            border: 1px solid lightgreen;
+            box-shadow: 1px 1px 3px;
+            border-radius: 10px;
+        }
+
+        .rijiBookhomePage {
+            width: 370px;
+            height: 550px;
+            background-color: rgb(177, 132, 81);
+            transform-origin: left;
+            position: absolute;
+            transition: 1s;
+            border-radius: 20px;
+            background-image: url(https://cbu01.alicdn.com/img/ibank/2019/970/393/10536393079_1982390691.jpg);
+            background-size: 740px;
+            background-attachment: scroll;
+            background-position: -190px -100px;
+            background-repeat: no-repeat;
+        }
+
+        .shelf {
+            background-color: pink;
+            width: 700px;
+            height: 500px;
+            display: none;
+            z-index: 1;
+            margin: 80px auto;
+            opacity: 0.9;
+            position: relative;
+            border-radius: 20px;
+            box-shadow: 3px 3px 5px;
+        }
+
+        .shelfEachRijiCon {
+            overflow-y: scroll;
+            /* background-color: aliceblue; */
+            width: 100%;
+            height: 80%;
+        }
+
+        .shelfEachRijiCon::-webkit-scrollbar {
+            display: none;
+        }
+
+        .openShelf {
+            position: absolute;
+            width: 100%;
+            height: 60%;
+            background-color: transparent;
+        }
+
+        .shelfCloseButton {
+            width: 100px;
+            height: 40px;
+            display: block;
+            margin: 30px auto;
+            border: 1px solid lightgreen;
+            box-shadow: 1px 1px 3px;
+            border-radius: 20px;
+        }
+
+        .eachRiji {
+            background-color: rgb(231, 243, 171);
+            width: 80px;
+            height: 110px;
+            margin: 10px;
+            float: left;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 3px 3px 10px;
+        }
+
+
+        .eachRiji:first-child {
+            display: none;
+        }
+
+        .backButton {
+            width: 150px;
+            height: 65px;
+            background-color: transparent;
+            border: 2px dotted greenyellow;
+            color: rgb(209, 150, 22);
+            font-size: 200%;
+            letter-spacing: 10px;
+            border-radius: 30px;
+            box-shadow: 3px 3px 5px;
+            font-weight: bold;
+        }
+
+        .backButtonDiv {
+            display: inline-block;
+            /* border: 1px solid red; */
+            position: absolute;
+            top: 730px;
+            left: 50px;
+        }
+        .robotButtonDiv{
+            display: block;
+            /* border: 1px solid red; */
+            background-color: bisque;
+            line-height: 45px;
+            color: #19b955;
+            font-size: 20px;
+            font-weight: bold;
+            opacity: 0.8;
+            border-radius: 30px;
+            cursor: pointer;
+            width: 100px;
+            position: absolute;
+            left: 47%;
+            bottom: 13%;
+            box-shadow: 2px 2px 5px;
+        }
+        .robotButtonDiv:hover{
+            color: #19b9569d;
+        }
+
+        /* robot-Style */
+        .robotDiv {
+        width: 430px;
+        height: 650px;
+        margin: 50px auto;
+        position: relative;
+        text-align: left;
+    }
+
+    .robotDiv img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0px;
+    }
+
+    .sendDiv {
+        position: absolute;
+        bottom: 0px;
+        background-color: rgb(229, 229, 229);
+        width: 100%;
+        line-height: 50px;
+        text-align: center;
+    }
+
+    .sendText {
+        border: 1px solid transparent;
+        width: 80%;
+        height: 40px;
+        margin: 0px 0px;
+        outline-width: 0px;
+        border-radius: 4px;
+    }
+
+    .sendButton {
+        background-color: #19b956e6;
+        border-radius: 4px;
+        border: 1px solid transparent;
+        width: 50px;
+        line-height: 35px;
+        /* cursor: pointer; */
+        margin-left: 10px;
+    }
+
+    .sendAndRecContent {
+        position: absolute;
+        /* background-color: rgba(255, 255, 255, 0.804); */
+        width: 100%;
+        height: 600px;
+        overflow-y: scroll;
+        /* z-index: 1; */
+    }
+
+    .sendContent {
+        display: block;
+        float: right;
+        background-color: #19b955;
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+        max-width: 300px;
+    }
+
+    .receiveContent {
+        display: block;
+        float: left;
+        background-color: whitesmoke;
+        padding: 10px;
+        margin: 10px;
+        border-radius: 5px;
+        max-width: 300px;
+    }
+
+    .videoDiv a{
+        text-align: center;
+        width: 100px;
+        line-height: 65px;
+        background-color:rgb(231, 243, 171);
+        box-shadow: 2px 2px 5px;
+        margin: 20px auto;
+        color: rgb(241, 190, 128);
+        display: block;
+    }
+    .videoDiv div{
+        color: rgb(173, 120, 59);
+        font-size: 19px;
+        font-weight: bold;
+        font-family: 宋体;
+        margin: 220px 19px;
+    }
+    
+
+    </style>
+
+    <script>
+        $(function(){
+            $(".videoDiv a").hide()
+            $(".videoDiv div").click(function(){
+                $(".videoDiv div").hide();
+                $(".videoDiv a").show();
+            })
+
+            $(".clearButton").click(function(){
+                localStorage.clear();
+            })
+        })
+    </script>
+    <script>
+        $(function () {
+
+            function outDate() {
+                var date = new Date();
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                return year + "年" + month + "月" + day + "日".trim();
+            }
+            function outSmallDate() {
+                var date = new Date();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                return month + "." + day;
+            }
+            function outDay() {
+                var day = new Date().getDay(); //通过日期对象获取数字形式的星期几
+                var weeks = new Array("星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+                return weeks[day];
+            }
+            function openRijiBook(dateKey) {
+                $(".rijiBookDiv").show()
+
+                // 获取dateKey对应的内容
+                var content = localStorage.getItem(dateKey);
+                // alert(content)
+                $(".rijiBookTA").val(content);
+                // 时间日期
+                var year = dateKey.substring(0, dateKey.lastIndexOf("日") + 1);
+                var day = dateKey.substring(dateKey.lastIndexOf("日") + 1)
+                $(".year").html(year);
+                $("span.day").html(day);
+
+                setTimeout(function () {
+                    $(".rijiBookhomePage").css("transform", "rotateY(-150deg)");
+                }, 1000)
+            }
+            function closeRijiBook() {
+                $(".rijiBookhomePage").css("transform", "rotateY(0deg)")
+
+                setTimeout(function () {
+                    $(".rijiBookDiv").hide();
+                    if (ifBackShelf == true) {
+                        $(".eachSmallDiv").show();
+                    } else {
+                        $(".shelf").show();
+                    }
+                }, 1000)
+            }
+            function outKeyArray() {
+                var keys = localStorage.getItem("keys");
+                if (keys == null) {
+                    return new Array();
+                }
+                var keyArray = keys.split(" ");
+                var keyRealArray = new Array();
+                for (var i in keyArray) {
+                    if (keyArray[i].trim().length != 0) {
+                        keyRealArray.push(keyArray[i]);
+                    }
+                }
+                return keyRealArray;
+            }
+            function saveKeyArray(keyArray) {
+                if (keyArray.length == 0) {
+                    localStorage.setItem("keys", "");
+                    return;
+                }
+                var keys = "";
+                for (var i in keyArray) {
+                    keys += keyArray[i] + " ";
+                }
+                localStorage.setItem("keys", keys);
+            }
+            function switchDate(date) {
+                var a = date.substring(date.lastIndexOf("年") + 1, date.lastIndexOf("月"))
+                var b = date.substring(date.lastIndexOf('月') + 1, date.lastIndexOf('日'))
+                var c = a + "." + b;
+                return c;
+            }
+            function checkRepeat(key) {
+                var a = true;
+                var keyArray = outKeyArray();
+                for (var i in keyArray) {
+                    if (keyArray[i] == key) {
+                        a = false;
+                        break;
+                    }
+                }
+                return a;
+            }
+            function deleteRiji(key) {
+                localStorage.removeItem(key);
+                var keys = outKeyArray();
+                for (var i in keys) {
+                    if (keys[i] == key) {
+                        keys.splice(i, 1);
+                        break;
+                    }
+                }
+                saveKeyArray(keys);
+            }
+            function clear() {
+                localStorage.clear();
+            }
+
+
+
+
+
+            var ifBackShelf = true;
+            $(".rijiBookDiv").hide();
+
+            // 写
+            $(".writeButton").click(function () {
+                ifBackShelf = true;
+                $(".robotButtonDiv").hide();
+
+                $(".rijiBookTA").removeAttr("disabled");
+
+                $(".eachSmallDiv").hide();
+                // alert(outDate()+outDay());
+                openRijiBook(outDate() + outDay());
+            })
+
+            // 关闭rijiBook
+            $(".guanbiButton").click(function () {
+                if (ifBackShelf == false) {
+                    closeRijiBook();
+                    setTimeout(function () {
+                        $(".shelf").show();
+                    }, 1000);
+                    return;
+                }
+
+                var content = $(".rijiBookTA").val();
+                // $(".rijiBookTA").val("");
+                var key = $(".year").html() + $(".day").html();
+
+                // if(content.trim().length == 0){
+                //     closeRijiBook();
+                //     return;
+                // }
+
+                // 存一个键值对
+                localStorage.setItem(key, content);
+
+                var keys = outKeyArray();
+                if (checkRepeat(key)) {
+                    keys.push(key);
+                    saveKeyArray(keys);
+                }
+
+                for (var i in keys) {
+                    var con = localStorage.getItem(keys[i]);
+                    if (con.trim().length <= 0) {
+                        deleteRiji(keys[i]);
+                    }
+                }
+                closeRijiBook();
+
+                // 显示思嘤按钮
+                setTimeout(function(){
+                    $(".robotButtonDiv").show();
+                }, 1000)
+            })
+
+            // 打开书架
+            $(".openShelf").click(function () {
+                // $(".backButton").hide();
+                ifBackShelf = false;
+                $(".robotButtonDiv").hide();
+                // 文本域禁用
+                $(".rijiBookTA").attr("disabled", "disabled");
+                $(".eachSmallDiv").hide();
+                $(".shelf").show();
+
+                var keys = outKeyArray();
+                // alert("共有日记" + keys.length + "本");
+
+                $(".eachRiji").not(".eachRiji:first").remove();
+                for (var i in keys) {
+                    // var content = localStorage.getItem(keys[i]);
+                    var key = keys[i];
+                    var date = switchDate(key);
+                    var day = key.substring(key.lastIndexOf("日") + 1);
+                    var clonedEachRiji = $(".eachRiji:first").clone(true).attr("rid", i).append($("<div style='font-size: 20px ; margin-top: 20px'>" + date + "</div><div style='font-size: 14px; color: gray'>" + day + "</div>"));
+                    clonedEachRiji.appendTo(".shelfEachRijiCon");
+                }
+            })
+
+            // 打开每本日记
+            $(".eachRiji").click(function () {
+                $(".shelf").hide();
+
+                var rid = $(this).attr("rid");
+                var keyArray = outKeyArray();
+                var key = keyArray[rid];
+
+                // alert(key)
+                openRijiBook(key);
+            })
+
+            // 关闭书架
+            $(".shelfCloseButton").click(function () {
+                $(".shelf").hide();
+                $(".eachSmallDiv").show();
+                $(".robotButtonDiv").show();
+
+            })
+
+
+            // 返回
+            $(".backButton").click(function () {
+                $("div.enteredDiv").fadeOut(1000, function () {
+                    $("div.homeDiv").fadeIn(1000);
+
+                });
+            })
+        })
+    </script>
+
+
+    <div class="enteredDiv">
+        <!-- 日记本 -->
+        <div class="rijiBookDiv">
+            <div class="rijiBookhomePage">years of quiet</div>
+            <div class="rijiBookName">diary</div>
+            <div class="rijiBookdateDiv ">
+                <div class="year pull-left"></div>
+                <div><span class="day pull-right"></span></div>
+            </div>
+            <div style="clear: both;"></div>
+            <div>
+                <textarea class="rijiBookTA" rows="5" cols="10"></textarea>
+            </div>
+            <div class="rijiBookButtonDiv">
+                <button class="guanbiButton">关闭</button>
+                <!-- <button class="saveButton">保存</button> -->
+            </div>
+        </div>
+
+        <!-- 书架 -->
+        <div class="shelf">
+            <div class="shelfEachRijiCon">
+                <div class="eachRiji">
+                </div>
+            </div>
+            <div style="clear:both"></div>
+            <button class="shelfCloseButton">关闭</button>
+        </div>
+
+        <div class="eachSmallDiv rijiDiv" riji="div1">
+            <div class="openShelf"></div>
+
+            <span class="rijiName">diary</span><br>
+
+            <button class="writeButton">write</button>
+            <!-- <textarea class="pageTa"></textarea><br> -->
+            <!-- <div class="rijiQuxiao pageButton">取消</div> -->
+            <!-- <div class="rijiSave pageButton">保存</div> -->
+        </div>
+        <div class="eachSmallDiv fireBigDiv">
+            烟火向星辰
+            <br>
+            <br>
+            所愿皆成真
+        </div>
+        <!-- <div class="eachSmallDiv"></div> -->
+        <div class="eachSmallDiv videoDiv">
+            <div>等风雪吹过，留我冰霜一朵，让我记得世界寒冷，但你温热如河。</div>
+            <a class="video1" href="https://cache79.cdanan.xyz/baidu/rrcache/751eaf36ed0b20243992cb277dc01b4d.m3u8">老师 好</a>
+            <a class="video2" href="https://hls.banyung.vip/m3u8.php?path=20220804-4be6c65deea280c5a506051573a64a71.m3u8">大圣娶亲</a>
+            <a class="video3" href="https://hls.banyung.vip/m3u8.php?path=20220804-7807ecb5174934b41024acfa0524aaa6.m3u8">夺宝熊兵</a>
+        </div>
+
+        <div class="backButtonDiv">
+            <button class="backButton">返回</button>
+        </div>
+
+        <div class="robotButtonDiv">
+            思 嘤
+        </div>
+
+        <!-- robot -->
+        
+        <div class="robotDiv">
+            <audio autoplay class="player">
+                <source src="">
+            </audio>
+            <img src="https://pic2.zhimg.com/v2-249146a3067a54561e0581cbd6b24acc_r.jpg?source=1940ef5c">
+            <!-- <div class="robotForeDiv">思 嘤</div> -->
+            <div class="sendAndRecContent">
+                
+                <!-- <div class="talkDiv" talkIndex="0">
+                    <div class="sendContent"></div>
+                    <div style="clear: both;"></div>
+                    <div class="receiveContent"></div>
+                    <div style="clear: both;"></div>
+                </div> -->
+                
+            </div>
+            <div class="sendDiv">
+                <input type="text" class="sendText" name="spoken" value="愿你每天开心">
+                <!-- <button type="button" class="btn btn-success sendButton">发送</button> -->
+                <input type="button" value="发送" class="sendButton">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(".robotDiv").hide();
+        $(".robotButtonDiv").click(function(){
+            $(".robotDiv").toggle();
+            $(".eachSmallDiv").toggle();
+        })
+    </script>
+
+    <script>
+        var talkIndex = 0
+        // 点击发送
+        $(".sendButton").click(function () {
+            $(".sendText").focus();
+            var text = $(".sendText").val();
+            if (text.trim().length == 0) {
+                return;
+            }
+    
+            // 创建对话Div
+            talkIndex = ++talkIndex;
+            $("<div class='talkDiv' talkIndex=" + talkIndex + "><div class='sendContent'></div><div style='clear: both;'></div></div>").appendTo(".sendAndRecContent");
+    
+            $(".talkDiv[talkIndex=" + talkIndex + "] .sendContent").html(text)
+            console.log(talkIndex);
+    
+            $(".sendText").val("");
+    
+            // 自动滚动
+            var scrollHeight = $('.sendAndRecContent').prop("scrollHeight");
+            $('.sendAndRecContent').scrollTop(scrollHeight);
+    
+            var url = "https://api.ownthink.com/bot?appid=9f80f5cc1f38672e9d0e8560917f2a85&userid=NUwwHlfn&spoken=" + text;
+            $.get(
+                url,
+                function (d) {
+                    $("<div class='receiveContent'></div><div style='clear: both;'></div>").appendTo($(".talkDiv[talkIndex=" + talkIndex + "]"));
+                    var response = d.data.info.text;
+                    var url = "http://tts.youdao.com/fanyivoice?le=zh&word=" + response;
+                    $(".player").attr("src", url);
+                    $(".talkDiv[talkIndex=" + talkIndex + "] .receiveContent").html(response);
+    
+                    // 自动滚动
+                    var scrollHeight = $('.sendAndRecContent').prop("scrollHeight");
+                    $('.sendAndRecContent').scrollTop(scrollHeight);
+    
+                }
+            )
+        })
+        // 按键发送
+        $(".sendText").keyup(function (e) {
+            if (e.keyCode != 13) {
+                return;
+            }
+            var text = $(".sendText").val();
+            if (text.trim().length == 0) {
+                return;
+            }
+    
+            // 创建对话Div
+            talkIndex = ++talkIndex;
+            $("<div class='talkDiv' talkIndex=" + talkIndex + "><div class='sendContent'></div><div style='clear: both;'></div></div>").appendTo(".sendAndRecContent");
+    
+            $(".talkDiv[talkIndex=" + talkIndex + "] .sendContent").html(text)
+            console.log(talkIndex);
+    
+            $(".sendText").val("");
+    
+            // 自动滚动
+            var scrollHeight = $('.sendAndRecContent').prop("scrollHeight");
+            $('.sendAndRecContent').scrollTop(scrollHeight);
+    
+            var url = "https://api.ownthink.com/bot?appid=9f80f5cc1f38672e9d0e8560917f2a85&userid=NUwwHlfn&spoken=" + text;
+            $.get(
+                url,
+                function (d) {
+                    $("<div class='receiveContent'></div><div style='clear: both;'></div>").appendTo($(".talkDiv[talkIndex=" + talkIndex + "]"));
+                    var response = d.data.info.text;
+                    var url = "http://tts.youdao.com/fanyivoice?le=zh&word=" + response;
+                    $(".player").attr("src", url);
+                    $(".talkDiv[talkIndex=" + talkIndex + "] .receiveContent").html(response);
+    
+                    // 自动滚动
+                    var scrollHeight = $('.sendAndRecContent').prop("scrollHeight");
+                    $('.sendAndRecContent').scrollTop(scrollHeight);
+    
+                }
+            )
+        })
+
+        // 输入框颜色变换
+        $(".sendText").focus(function(){
+            $(this).css("border", "1px solid pink");
+        })
+        $(".sendText").blur(function(){
+            $(this).css("border", "1px solid transparent");
+        })
+    </script>
+
+    <script>
+        $(function(){
+            $(".fireBigDiv").click(function(){
+                $('.fireDiv').fireworks({
+                    sound: true, // sound effect
+                    opacity: 1,
+                    width: '100%',
+                    height: '100%'
+                });
+            })
+        })
+    </script>
+    <style>
+        .fireBigDiv{
+            color: rgba(173, 120, 59, 0.856);
+            font-size: 25px;
+            padding: 210px 0px;
+            font-weight: bold;
+            font-family: 宋体;
+        }
+    </style>
+    <!-- <div class="video">
+        直播间
+        <a href="https://hw.hls.huya.com/huyalive/2386052927-2386052927-10248019287990075392-4772229310-10057-A-0-1.m3u8?wsSecret=81b80ca139cf59e8795564e542f2060b&wsTime=62e3d8af&seqid=3123063783657&ctype=tars_mobile&ver=1&fs=bgct&t=103&ratio=2000&uid=1464050871240&uuid=2070138273&t=103&sv=2110211124">大仙</a>
+        <br>
+        老师好
+        <a href="https://cache79.cdanan.xyz/baidu/rrcache/751eaf36ed0b20243992cb277dc01b4d.m3u8">老师好</a>
+        
+    </div> -->
+
+
+
+    <div class="fireDiv"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="musicSource hidden">
+        一生所爱 http://music.163.com/song/media/outer/url?id=25707139.mp3
+        断桥残雪 http://music.163.com/song/media/outer/url?id=167937.mp3
+        素颜 http://music.163.com/song/media/outer/url?id=167827.mp3
+        北京东路的日子 http://music.163.com/song/media/outer/url?id=458245372.mp3
+        红昭愿 http://music.163.com/song/media/outer/url?id=452986458.mp3
+        同桌的你 http://music.163.com/song/media/outer/url?id=28387594.mp3
+        琵琶行 http://music.163.com/song/media/outer/url?id=476513774.mp3
+        认错 http://music.163.com/song/media/outer/url?id=167888.mp3
+        有何不可 http://music.163.com/song/media/outer/url?id=167876.mp3
+        多余的解释 http://music.163.com/song/media/outer/url?id=167873.mp3
+        灰色头像 http://music.163.com/song/media/outer/url?id=167844.mp3
+        你若成风 http://music.163.com/song/media/outer/url?id=5255987.mp3
+        他的猫 http://music.163.com/song/media/outer/url?id=26353161.mp3
+        刚刚好 http://music.163.com/song/media/outer/url?id=415792881.mp3
+        演员 http://music.163.com/song/media/outer/url?id=32507038.mp3
+    </div>
+    <div class="morningSay hidden">
+        天亮了，美妙的一天又开始了，起床吧，呼吸清爽，拥抱阳光；浅笑吧，高兴心情，高兴一天。早上好，愿你有个好心情!
+        微笑拥抱每一天，做像向日葵般温暖的女子。早安!
+        很希望自己是一棵树，守静，向光，安然，触着流云和微风，窃窃的欢喜。
+        向日葵说，只要你朝着阳光努力向上，生活便会因此变得单纯而美好。美好的一天开始，愿你能向日葵一样，迎着阳光向上！早安！
+        闲看花开，静待花落，冷暖自知，干净如始。
+        阳光下灿烂，风雨中奔跑，做自己的梦，走自己的路。
+        人生如茶，静心以对。对错无辜，缘由前生。认得清，放下是聪明。看不透，一场梦无痕。
+        早上起床后，请你先把自我沉睡的心打开，然后再把窗户打开。这样，户外的风才能吹进你的心扉。因此，每一天，你要做的第一件事就是开心!
+        你跌跌撞撞，落得一身的伤，就当是为青春，画下的残妆。
+        人生就像一场旅行，不必在乎目的地，在乎的只有沿途的风景，以及看风景的心情。
+        努力去做一个温暖的人，用真心对世界微笑，用快乐去迎接每一天的阳光，用自信向世界宣称你过得很好。早安!
+        一万个美丽的未来，抵不上一个温暖的现在;每一个真实的现在，都是我们曾经幻想的未来，愿你爱上现在，梦见未来。早安!
+        世界很大，可是对自己真心好的人不多，没人会时时刻刻守着自己，努力照顾好自己，为了自己，更为了在乎自己的人!早安!
+        心情就像衣服，脏了就拿去洗洗，晒晒，阳光自然就会蔓延开来。早安!
+        时间会带你去最正确的人身边。请先好好爱着自己。然后那个还不知道在哪里的人，会来接你。
+        一天很短，开心了就笑，不开心了就过会儿再笑。
+        每一个清晨，都是一个美好的开始，每一个清晨，都意味着前进的脚步，不管昨天怎么样，今天我们只做最好的自己，带着微笑，带着善良，带着梦想起航，早安！
+        陶醉于清晨微微的清风，让自然的味道扑向你的心扉，用心感受，你会发现：希望在向你招手，梦想在向你奔跑，幸福在向你靠拢。早安！
+        每天早晨，都再一次提醒自己，生命短暂而美好，没时间纠结，没时间计较。早安！
+    </div>
+    <div class="nightSay hidden">
+        没有灯的夜，我愿为蜡烛，为你照亮；没有月亮的夜，我愿为星子，和你相守。愿你夜夜安然入睡，好梦甜甜美美。
+        夜空中的月牙真白，那是我纯洁的真心祝福你做个好梦，满天的星星点亮整个天空，那是我明亮的眼睛看着你安然入睡，晚安！
+        再烦，也要记得微笑；再急，也要注意语气；再苦，也别忘记坚持；再累，也要爱惜自己。再忙，我也祝福你：今夜好梦。
+        思念不因劳累而改变，问候不因疲惫而变懒，祝福不因休息而变缓，关怀随星星眨眼，牵挂在深夜依然，轻轻道声：祝你晚安！
+        当时间消磨掉了你的热情，你便会发现，那些曾令你歇斯底里的去执着的人，现已变得可有可无。晚安！
+        当你快乐时，你要想，这快乐不是永恒的。当你痛苦时，你要想，这痛苦也不是永恒的。晚安！
+        时光，浓淡相宜；人心，远近相安。这就是最好的生活。晚安。
+        我们都不能确定最终能否在一起，但能确定的是，为了在一起，我会拼尽全力。晚安！
+        听说思念一个人会让她彻夜难眠，听说梦到一个人会让她半夜惊醒，为了、让你能够安然入睡，我决定忍痛不想你不梦你。祝你好梦。
+        如果累了，就拉上窗帘、关上手机、关掉闹钟、深呼吸一口气，放空自己，钻进被窝去睡觉。倦了的日子，总需要更多精力。晚安！
+        白天挣钱，顺其自然，夜晚入睡，精力充沛，放松心情，圆满美梦，自由坦然，快乐无限，祝你晚安，轻松入眠，愿你开心每一天！
+        送走一天的忙碌，忘掉一天的烦恼，回想一天的美好，重温一天的快乐，然后闭上眼睛，睡个好觉，晚安。美梦。
+        雨会停，心会晴，没有什么会永远糟糕透顶。晚安。
+        传说今晚，阴魂不散，死光又现，鬼魂四处转！愿鬼听到我的呼唤，半夜来到你庆头，苍白的脸，幽绿的眼，干枯的手抚摸你的脸，代我向你说一句：晚安。
+        假如人生不曾与你相遇，我不会相信，有一种人一认识就觉得温馨。你是那抹温馨里的甜蜜，爱你无需浪漫的言语，只需一生一世的美丽，晚安。
+        总是在一个人的时候想太多，然后莫名其妙不开心；也许一个人，要走很多的路，经历过生命中无数突如其来的繁华和苍凉，才会变成熟。晚安！
+        晚上是烦恼的结束，早晨是快乐的开始，晴天照出你灿烂的心情，雨天冲去你所有的忧愁，无论是早晚，不管是晴雨，我都愿陪在你身边，愿你快乐每一天！
+        没有什么人能一路单纯到底，但要记住，别忘了最初的自己。晚安。
+    </div>
+    <div class="shici hidden">
+        <div class="eachShici" sid="0">
+            <span>声声慢·寻寻觅觅</span>
+            <div>
+                寻寻觅觅，冷冷清清，凄凄惨惨戚戚。乍暖还寒时候，最难将息。三杯两盏淡酒，怎敌他、晚来风急？雁过也，正伤心，却是旧时相识。
+                满地黄花堆积。憔悴损，如今有谁堪摘？守著窗儿，独自怎生得黑？梧桐更兼细雨，到黄昏、点点滴滴。这次第，怎一个愁字了得！
+            </div>
+        </div>
+        <div class="eachShici" sid="1">
+            <span>一剪梅·红藕香残玉簟秋</span>
+            <div>
+                红藕香残玉簟秋，轻解罗裳，独上兰舟。云中谁寄锦书来？雁字回时，月满西楼。
+                花自飘零水自流，一种相思，两处闲愁。此情无计可消除，才下眉头，却上心头。
+            </div>
+        </div>
+        <div class="eachShici" sid="2">
+            <span>醉花阴·薄雾浓云愁永昼</span>
+            <div>
+                薄雾浓云愁永昼，瑞脑消金兽。佳节又重阳，玉枕纱厨，半夜凉初透。
+                东篱把酒黄昏后，有暗香盈袖。莫道不销魂，帘卷西风，人比黄花瘦。
+            </div>
+        </div>
+        <div class="eachShici" sid="3">
+            <span>如梦令·昨夜雨疏风骤</span>
+            <div>
+                昨夜雨疏风骤，浓睡不消残酒。
+                试问卷帘人，却道海棠依旧。
+                知否，知否？应是绿肥红瘦。
+            </div>
+        </div>
+        <div class="eachShici" sid="4">
+            <span>橘颂</span>
+            <div>
+                后皇嘉树，橘徕服兮。受命不迁，生南国兮。
+                深固难徙，更壹志兮。绿叶素荣，纷其可喜兮。
+                曾枝剡棘，圆果抟兮。青黄杂糅，文章烂兮。
+                精色内白，类任道兮。纷緼宜修，姱而不丑兮。
+                嗟尔幼志，有以异兮。独立不迁，岂不可喜兮?
+                深固难徙，廓其无求兮。苏世独立，横而不流兮。
+                闭心自慎，终不失过兮。秉德无私，参天地兮。
+                愿岁并谢，与长友兮。淑离不淫，梗其有理兮。
+                年岁虽少，可师长兮。行比伯夷，置以为像兮。
+            </div>
+        </div>
+        <div class="eachShici" sid="5">
+            <span>离骚</span>
+            <div>
+                鸷鸟之不群兮，自前世而固然。
+                何方圜之能周兮，夫孰异道而相安？
+                屈心而抑志兮，忍尤而攘诟。
+                伏清白以死直兮，固前圣之所厚。
+                悔相道之不察兮，延伫乎吾将反。
+                回朕车以复路兮，及行迷之未远。
+                步余马于兰皋兮，驰椒丘且焉止息。
+                进不入以离尤兮，退将复修吾初服。
+                制芰荷以为衣兮，集芙蓉以为裳。
+                不吾知其亦已兮，苟余情其信芳。
+                高余冠之岌岌兮，长余佩之陆离。
+                芳与泽其杂糅兮，唯昭质其犹未亏。
+                忽反顾以游目兮，将往观乎四荒。
+                佩缤纷其繁饰兮，芳菲菲其弥章。
+                民生各有所乐兮，余独好修以为常。
+                虽体解吾犹未变兮，岂余心之可惩。
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
