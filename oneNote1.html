@@ -149,7 +149,7 @@
                     class="glyphicon glyphicon-plus"></span></a>
             <a href="#" v-for="(titleLink,index) in titles" v-on:click="showTitle(titleLink)"
                class="list-group-item list-group-item-success">
-                {{index + 1 + ".  " + titleLink}}
+                {{index + 1 + ".  " + titleLink.substring(0, 15)}}
                 <span class="glyphicon glyphicon-trash pull-right deleteLink" @click="deleteTitle(titleLink)"></span>
             </a>
         </div>
@@ -187,7 +187,7 @@
     new Vue({
         el: "#bigDiv",
         data: {
-            titles: getSimTitle(),
+            titles: getTitle(),
             eachContent: localStorage.getItem(getTitle()[getTitle().length - 1]),
             title: getTitle()[getTitle().length - 1],
 
