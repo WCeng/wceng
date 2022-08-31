@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>oneNote</title>
+    <title>Title</title>
 
 
     <script src="https://how2j.cn/study/js/jquery/2.0.0/jquery.min.js"></script>
@@ -148,8 +148,8 @@
             <a href="#" v-on:click="addTitle" class="list-group-item list-group-item-default addTitleLink"><span
                     class="glyphicon glyphicon-plus"></span></a>
             <a href="#" v-for="(titleLink,index) in titles" v-on:click="showTitle(titleLink)"
-               class="list-group-item list-group-item-success">
-                {{index + 1 + ".  " + titleLink.substring(0, 15)}}
+               class="list-group-item list-group-item-success titleLink">
+                {{index + 1 + ".  " + titleLink}}
                 <span class="glyphicon glyphicon-trash pull-right deleteLink" @click="deleteTitle(titleLink)"></span>
             </a>
         </div>
@@ -165,6 +165,7 @@
 </html>
 
 
+
 <script>
 
     Vue.component('ta', {
@@ -173,12 +174,12 @@
             blurSaveCode: function () {
                 $(".codeTA").hide()
                 var value = $(".codeTA").val();
-                if (value.length == 0) {
+                if (value.length === 0) {
                     $(".contentDiv").html($(".contentDiv").html() + "<br>")
                     return
                 }
                 value = html_encode(value)
-                $(".contentDiv").html($(".contentDiv").html() + "<pre contenteditable='true'>" + value + "</pre><br>")
+                $(".contentDiv").html($(".contentDiv").html() + "<pre>" + value + "</pre><br>")
                 $(".codeTA").val("");
             }
         }
@@ -338,25 +339,14 @@
     //图片识别
     $(".contentDiv").on("dblclick", "img", function (){
         let sourcedata = $(this).attr("src");
-        var data = "{\"image\":\"\",\"url\":\"https://www.apispace.com/assets/images/free_try.jpg\",\"language\":\"CHN_ENG\"}"
 
-        $.ajax({
-            "url":"https://eolink.o.apispace.com/ocrbase/ocr/v1/base",
-            "method": "POST",
-            "headers": {
-                "X-APISpace-Token":"qcrd8o8j7wmy0tu2jbffwf2bh7x4iaja",
-                "Authorization-Type":"apikey",
-                "Content-Type":"application/json"
-            },
-            "data": data,
-            "crossDomain": true
+    })
+
+    $(".titleLink").click(function (){
+        $(".titleLink").each(function (){
+            $(this).attr("class", "list-group-item list-group-item-success titleLink")
         })
-            .done(function(response){
-                alert(1)
-            })
-            .fail(function(jqXHR){
-                alert(0)
-            })
+        $(this).attr("class", "list-group-item list-group-item-warning titleLink")
     })
 
 
