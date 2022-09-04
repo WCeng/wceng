@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:over-flow-y="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+    <title>Title</title>
+
+    <script src="https://how2j.cn/study/js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="https://how2j.cn/study/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="https://how2j.cn/study/js/bootstrap/3.3.6/bootstrap.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+
+</head>
+<body>
+<style>
+    @media (min-width: 0px) and (max-width: 764px) {
+        .onenote {
+            /*text-align: center;*/
+            width: 100%;
+            border: 1px solid #999999;
+        }
+
+        .contentDiv {
+            text-align: left;
+            width: 100%;
+            border: 1px solid pink;
+            outline: none;
+            padding: 15px;
+            margin-bottom: 200px;
+            user-modify: read-only;
+        }
+
+        .titleDiv {
+            /*border: 1px solid #999999;*/
+            /*height: 100%;*/
+            width: 100%;
+            padding: 0px 10px;
+        }
+
+        .knowledgeTitle {
+            display: block;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+            width: 80%;
+            margin: 20px auto 30px;
+        }
+
+        .adjustDiv {
+            width: 90%;
+            margin: 10px auto;
+            position: relative;
+            /*border: 1px solid red;*/
+        }
+
+        .editSpan {
+            cursor: pointer;
+            font-size: 16px;
+            vertical-align: center;
+            margin-left: 10px;
+        }
+
+        pre {
+            position: relative;
+            outline: none;
+        }
+
+        pre:hover {
+            cursor: pointer;
+        }
+
+        .copyButton {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            opacity: 0.6;
+            display: block;
+        }
+
+        .changeTheme {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
+        .dark {
+            background-color: rgba(0, 0, 0, 0.99);
+            color: white;
+            opacity: 0.7;
+        }
+        .menu{
+            position: absolute;
+            top: 10px;
+            right: 0px;
+        }
+        .listTitle{
+            overflow-y: auto;
+            max-height: 250px;
+        }
+        #myModal{
+            opacity: 0.9;
+        }
+    }
+</style>
+
+
+<div id="bigDiv">
+    <div class="onenote pull-left" id="oneNote">
+        <div class="adjustDiv">
+
+            <span class="glyphicon glyphicon-th-list menu" data-toggle="modal" data-target="#myModal"></span>
+            <input type="text" class="knowledgeTitle form-control" v-model="title" v-on:blur="blurSaveTitle">
+
+            <div>
+                <button class="addCodeButton" v-on:click="addCode">
+                    <span class="glyphicon glyphicon-plus" title="添加代码"></span>
+                </button>
+                <span class="editSpan"><span class="glyphicon glyphicon-lock "></span></span>
+                <button class="btn btn-success changeTheme">切换主题</button>
+                <button class="exportButton btn btn-info"><span class="	glyphicon glyphicon-export"></span></button>
+                <button class="importButton btn btn-info"><span class="	glyphicon glyphicon-import"></span></button>
+            </div>
+            <div style="clear: both"></div>
+
+
+            <div class="contentDiv" contenteditable="true" v-html="eachContent" @blur="blurSaveContent($event)"
+                 ref="contentDiv"></div>
+        </div>
+    </div>
+
+    <input type="file" class="hidden" id="fileInput" onchange="getFileContent(value)">
+    <ta></ta>
+
+
+    <div class="modal " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+<!--                    <button data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>-->
+<!--                    <h4 class="modal-title">提问</h4>-->
+<!--                    <h3 class="modal-title" align="center">菜单</h3>-->
+<!--                    <a href="#" data-dismiss="modal" v-on:click="addTitle" class="list-group-item list-group-item-default addTitleLink"><span-->
+<!--                            class="glyphicon glyphicon-plus"></span></a>-->
+                </div>
+                <div class="modal-body">
+<!--                    --------------------------->
+                    <div class="pull-right titleDiv" id="titleDiv">
+                        <div class="list-group listTitle">
+                            <a href="#" data-dismiss="modal" v-for="(titleLink,index) in titles" v-on:click="showTitle(titleLink)"
+                               class="list-group-item list-group-item-success titleLink">
+                                {{index + 1 + ".  " + titleLink}}
+                                <span class="glyphicon glyphicon-trash pull-right deleteLink" @click="deleteTitle(titleLink)"></span>
+                            </a>
+                        </div>
+                    </div>
+<!--                    --------------------------->
+                </div>
+                <div class="modal-footer">
+<!--                    <button data-dismiss="modal" class="btn btn-default" type="button" style="margin-top: 5px">关闭</button>-->
+<!--                    <button class="btn btn-primary" id="submit" type="button">提交</button>-->
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+
+
+</div>
+
+
+<script>
+
+    Vue.component('ta', {
+        template: '<textarea class="codeTA" v-on:blur="blurSaveCode"></textarea>',
+        methods: {
+            blurSaveCode: function () {
+                $(".codeTA").hide()
+                var value = $(".codeTA").val();
+                if (value.length === 0) {
+                    $(".contentDiv").html($(".contentDiv").html() + "<br>")
+                    return
+                }
+                value = html_encode(value)
+                $(".contentDiv").html($(".contentDiv").html() + "<pre>" + value + "</pre><br>")
+                $(".codeTA").val("");
+            }
+        }
+    })
+
+    new Vue({
+        el: "#bigDiv",
+        data: {
+            titles: getTitle(),
+            eachContent: localStorage.getItem(getTitle()[getTitle().length - 1]),
+            title: getTitle()[getTitle().length - 1],
+
+        },
+
+        methods: {
+            showTitle: function (title) {
+                this.title = title;
+                this.eachContent = localStorage.getItem(title);
+                setTimeout(function () {
+                    imgAdapt()
+                    ifEdit()
+                }, 10)
+            },
+            //    添加标题
+            addTitle: function () {
+                this.title = "";
+                this.eachContent = ""
+                $(".knowledgeTitle").focus();
+            },
+            //    删除标题
+            deleteTitle: function (title) {
+                let ifDelete = confirm("确认要删除吗？");
+                if (ifDelete) {
+                    let titleList = getTitle();
+                    titleList = titleList.filter((x) => x !== title);
+                    localStorage.removeItem(title);
+                    saveTitles(titleList);
+                    location.reload();
+                }
+            },
+            //    失去焦点保存标题
+            blurSaveTitle: function () {
+                if(this.title.length === 0){
+                    return;
+                }
+                let titleList = getTitle();
+                for (let i in titleList) {
+                    if (titleList[i] === this.title || this.title.trim().length === 0) {
+                        return;
+                    }
+                }
+                titleList.push(this.title);
+                saveTitles(titleList);
+                location.reload()
+            },
+            //    失去焦点保存内容
+            blurSaveContent: function (event) {
+                if (this.title.trim().length === 0) {
+                    $(".knowledgeTitle").focus()
+                    return;
+                }
+                let content = event.currentTarget.innerHTML;
+                localStorage.setItem(this.title, content);
+
+                setTimeout(function () {
+                    imgAdapt()
+                }, 10)
+            },
+            //    添加代码
+            addCode: function () {
+                $(".codeTA").show()
+                $(".codeTA").focus()
+            }
+        }
+    })
+
+
+    $(".codeTA").hide()
+
+    // $(".contentDiv").on("paste", function (e) {
+    //     setTimeout(function (){
+    //
+    //         $(".contentDiv").html($(".contentDiv").html() + "<br>")
+    //     }, 20)
+    // })
+
+    let editSpanFound = true;
+    $(".editSpan").click(function () {
+        if (editSpanFound) {
+            $(this).attr("style", "color: #000000")
+        } else {
+            $(this).attr("style", "color: #999999")
+        }
+        editSpanFound = !editSpanFound;
+
+        var contentDivCon = $(".contentDiv").attr("contenteditable");
+        if (contentDivCon == "true") {
+            $(".contentDiv").attr("contenteditable", "false")
+            $("pre").attr("contenteditable", "false")
+        } else {
+            $(".contentDiv").attr("contenteditable", "true")
+            $("pre").attr("contenteditable", "true")
+        }
+    })
+    $(".editSpan").click()
+
+    function ifEdit() {
+        var contentDivCon = $(".contentDiv").attr("contenteditable");
+        if (contentDivCon == "true") {
+            $("pre").attr("contenteditable", "true")
+        } else {
+            $("pre").attr("contenteditable", "false")
+        }
+    }
+
+
+    //图片自适应
+    let divWidth = $(".contentDiv").css("width");
+
+    function imgAdapt() {
+        $(".contentDiv img").each(function (index, element) {
+            let width = $(this).css("width");
+            if (width > divWidth) {
+                $(this).css("width", "100%")
+            }
+        })
+    }
+
+    setTimeout(function (){
+        imgAdapt()
+    }, 10)
+
+    //切换主题
+    let found = false;
+    $(".changeTheme").click(function () {
+        if (found === false) {
+            $("body").addClass("dark")
+        } else {
+            $("body").removeClass("dark")
+        }
+        found = !found;
+    })
+
+
+    $(".contentDiv").on("mouseenter", "pre", function () {
+        $(this).append("<button class='copyButton' contenteditable='false'>复制</button>")
+    })
+    $(".contentDiv").on("mouseleave", "pre", function () {
+        $(".copyButton").remove()
+    })
+    $(".contentDiv").on("click", ".copyButton", function () {
+        $(this).hide();
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        var range = document.createRange();
+        let con = $(this).parent().get();
+        range.selectNodeContents(con[0]); // 需要选中的dom节点
+        selection.addRange(range);
+
+        try {
+            document.execCommand("copy", undefined, undefined)
+        } catch (e) {
+            console.log("浏览器不支持该功能")
+        }
+    })
+
+    //图片识别
+    $(".contentDiv").on("dblclick", "img", function () {
+        let sourcedata = $(this).attr("src");
+
+    })
+
+    //标题加高光
+    $(".titleLink").click(function () {
+        $(".titleLink").each(function () {
+            $(this).attr("class", "list-group-item list-group-item-success titleLink")
+        })
+        $(this).attr("class", "list-group-item list-group-item-warning titleLink")
+    })
+
+    //
+    $(".menu").click(function (){
+
+    })
+
+
+    // 编译和反编译
+    function html_encode(str) {
+        var s = "";
+        if (str.length == 0) return "";
+        s = str.replace(/&/g, "&amp;");
+        s = s.replace(/</g, "&lt;");
+        s = s.replace(/>/g, "&gt;");
+        s = s.replace(/ /g, "&nbsp;");
+        s = s.replace(/\'/g, "&#39;");
+        s = s.replace(/\"/g, "&quot;");
+        s = s.replace(/\n/g, "<br/>");
+        return s;
+    }
+
+    //    标题失去焦点保存
+    $(".knowledgeTitle").blur(function () {
+        var title = $(this).val();
+
+        let found = true;
+
+        var titleList = getTitle();
+        for (var i in titleList) {
+            if (titleList[i] == title || 0 == title.length) {
+                found = false;
+                break;
+            }
+        }
+        if (found) {
+            titleList.push(title)
+            saveTitles(titleList)
+        }
+    })
+
+
+    //  得到标题
+    function getTitle() {
+        var titleList = new Array();
+        var titles = localStorage.getItem("titles")
+        if (titles == null) {
+            return titleList;
+        }
+        var titleArray = titles.split("|||");
+        for (var i in titleArray) {
+            if (titleArray[i].trim().length != 0) {
+                titleList.push(titleArray[i]);
+            }
+        }
+        return titleList;
+    }
+
+
+    //如果titles是空，则创建
+    if (localStorage.getItem("titles") == null) {
+        localStorage.setItem("titles", "");
+    }
+
+    //保存标题
+    function saveTitles(titleList) {
+        var titleStr = ""
+        for (var i in titleList) {
+            titleStr += titleList[i] + "|||"
+        }
+        localStorage.setItem("titles", titleStr);
+    }
+
+    //    备份文件(导出)
+    $("button.exportButton").on("click", function () {
+
+        var textTitles = localStorage.getItem("titles");
+        var titleList = getTitle();
+        var content = "";
+        for (var i in titleList) {
+            var textEachContent = localStorage.getItem(titleList[i]);
+            content += textEachContent + "||||"
+        }
+        var textContent = textTitles + "&&&" + "\r\n" + content;
+        exportRaw('oneNoteData.txt', textContent)
+    })
+
+    function fakeClick(obj) {
+        var ev = document.createEvent("MouseEvents");
+        ev.initMouseEvent("click", true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        obj.dispatchEvent(ev);
+    }
+
+    function exportRaw(name, data) {
+        var urlObject = window.URL || window.webkitURL || window;
+        var export_blob = new Blob([data]);
+        var save_link = document.createElementNS("http://www.w3.org/1999/xhtml", "a")
+        save_link.href = urlObject.createObjectURL(export_blob);
+        save_link.download = name;
+        fakeClick(save_link);
+    }
+
+    //    导入文件
+    $(".importButton").click(function () {
+        $("#fileInput").click()
+    })
+
+    function getFileContent(value) {
+        var doc = document.getElementById('fileInput')
+        var fileName = doc.files[0].name;
+        var selectedFile = doc.files[0];
+
+        var reader = new FileReader();//这里是核心！！！读取操作就是由它完成的。
+        reader.readAsText(selectedFile);//读取文件的内容
+
+        reader.onload = function () {
+            var content = this.result;
+            var titles = content.split("&&&")[0];
+            var contents = content.split("&&&")[1];
+            var contentList = contents.split("||||");
+            var index;
+            for (var i in contentList) {
+                if (contentList[i].trim().length === 0) {
+                    index = i;
+                    break;
+                }
+            }
+            if (null != index) {
+                contentList.splice(index, 1);
+            }
+            localStorage.setItem("titles", titles);
+            var titleList = titles.split("|||")
+            titleList.splice(titleList.length - 1, 1);
+            for (var y in titleList) {
+                localStorage.setItem(titleList[y], contentList[y])
+                location.reload()
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
