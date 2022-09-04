@@ -547,7 +547,14 @@
         var map = new AMap.Map('container', {
             // resizeEnable: true;
         });
-        var cityAdcode = map.getAdcode();
+        var cityAdcode;
+        cityAdcode = map.getAdcode();
+        if(cityAdcode !== "110000"){
+            localStorage.setItem("cityCode", cityAdcode);
+        }
+        if(localStorage.getItem("cityCode") !== null){
+            cityAdcode = localStorage.getItem("cityCode");
+        }
 
         
         // 当前天气
